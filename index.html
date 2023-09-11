@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        gap: 20px;
+      }
+      .counter {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+        /* margin: 20px; */
+        /* padding: 20px; */
+        width: 300px;
+        height: 280px;
+        text-align: center;
+      }
+      .counter h2 {
+        margin: 0 0 10px;
+      }
+      .counter button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        width: 200px;
+      }
+      p {
+        font-size: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="counter" id="daysTillEnd">
+      <h2>Total Days Remaining:</h2>
+      <p id="days"></p>
+    </div>
+    <div class="counter" id="wfh">
+      <h2>WFH Days:</h2>
+      <p id="wfhDays"></p>
+      <button onclick="decreaseCount('wfhDays')">Decrease Count</button>
+    </div>
+    <div class="counter" id="wfo">
+      <h2>WFO Days:</h2>
+      <p id="wfoDays"></p>
+      <button onclick="decreaseCount('wfoDays')">Decrease Count</button>
+    </div>
+
+    <script>
+      // Set your initial work from home and work from office days here
+      let wfhDays = localStorage.getItem("wfhDays") || 42;
+      let wfoDays = localStorage.getItem("wfoDays") || 47;
+
+      function calculateDaysTillEnd() {
+        const now = new Date();
+        const end = new Date("2023-12-31");
+        const diffTime = Math.abs(end - now);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+      }
+
+      function decreaseCount(id) {
+        if (id === "wfhDays" && wfhDays > 0) {
+          wfhDays--;
+          localStorage.setItem("wfhDays", wfhDays);
+        } else if (id === "wfoDays" && wfoDays > 0) {
+          wfoDays--;
+          localStorage.setItem("wfoDays", wfoDays);
+        }
+        updateCounts();
+      }
+
+      function updateCounts() {
+        document.getElementById("days").innerText = calculateDaysTillEnd();
+        document.getElementById("wfhDays").innerText = wfhDays;
+        document.getElementById("wfoDays").innerText = wfoDays;
+      }
+
+      updateCounts();
+    </script>
+  </body>
+</html>
